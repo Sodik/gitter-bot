@@ -7,8 +7,12 @@ var calc = {
     this.ch = this.expr[this.index];
     this.res = [];
     var i = 0;
+    var res;
     while(this.index < this.expr.length && i < 200){
-      this.res.push(this.process());
+      res = this.process();
+      if(res){
+        this.res.push(res);
+      }
       i++;
     }
 
@@ -33,6 +37,12 @@ var calc = {
     if(token){
       return token;
     }
+
+    if(this.index >= this.expr.length){
+      return false;
+    }
+
+    console.log(this.index, this.ch)
 
     throw('Parse Error');
   },
