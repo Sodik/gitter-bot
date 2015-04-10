@@ -1,4 +1,4 @@
-var whitespaceRegExp = /\s/g;
+var whitespaceRegExp = /\s/;
 var numberRegExp = /^[0-9]+$/;
 var calc = {
   calculate: function(expr){
@@ -44,7 +44,7 @@ var calc = {
 
     console.log(this.index, this.ch)
 
-    throw('Parse Error');
+    throw new Error('Parsing is not possible');
   },
   checkOperator: function(){
     if(this.isOperator()){
@@ -57,8 +57,13 @@ var calc = {
   },
   checkNumber: function(){
     if(this.isDecimalDigit()){
-      var token = this.createToken('number', this.ch);
+      var num =  this.ch;
       this.getNextChar();
+      while(this.isDecimalDigit()){
+        num += this.ch;
+        this.getNextChar();
+      }
+      var token = this.createToken('number', num);
       if(this.ch === '.'){
         this.floatNumberProcess(token);
       }
@@ -141,7 +146,7 @@ var calc = {
       case '+':
         return parseFloat(a.value, 10) + parseFloat(b.value, 10);
       case '-':
-        return parseFloat(a.value, 10) + parseFloat(b.value, 10);
+        return parseFloat(a.value, 10) - parseFloat(b.value, 10);
       case '*':
         return parseFloat(a.value, 10) * parseFloat(b.value, 10);
       case '/':
